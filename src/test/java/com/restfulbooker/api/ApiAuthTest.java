@@ -20,7 +20,9 @@ public class ApiAuthTest {
                 .setPassword(password)
                 .build();
         Response response = AuthApi.postAuth(auth);
-        Approvals.verify(response.getStatusCode());
+
+        Assertions.assertEquals(200, response.getStatusCode());
+
         String actualToken = response.getBody().jsonPath().get("token").toString();
         Assertions.assertFalse(actualToken.isEmpty());
     }
@@ -35,6 +37,7 @@ public class ApiAuthTest {
                 .setPassword(password)
                 .build();
         Response response = AuthApi.postAuth(auth);
+
         String reasonInResponse = response.getBody().jsonPath().get("reason").toString();
         Assertions.assertEquals("Bad credentials", reasonInResponse);
     }

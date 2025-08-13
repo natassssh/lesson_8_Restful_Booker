@@ -9,6 +9,7 @@ import com.restfulbooker.api.payloads.lombok.Booking;
 import com.restfulbooker.api.payloads.lombok.BookingDates;
 import io.restassured.response.Response;
 import org.approvaltests.Approvals;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class ApiStatusCodeTest {
@@ -17,20 +18,21 @@ public class ApiStatusCodeTest {
     public void getBookingShouldReturn200() {
         Response response = BookingApi.getBookings();
 
-        Approvals.verify(response.getStatusCode());
+        Assertions.assertEquals(200, response.getStatusCode());
     }
 
     @Test
     public void getBookingIdShouldReturn200() {
         Response response = BookingApi.getBooking(1, "application/json");
-        Approvals.verify(response.getStatusCode());
+
+        Assertions.assertEquals(200, response.getStatusCode());
     }
 
     @Test
     public void getBookingIdWithBadAcceptShouldReturn418() {
         Response response = BookingApi.getBooking(1, "text/plain");
 
-        Approvals.verify(response.getStatusCode());
+        Assertions.assertEquals(418, response.getStatusCode());
     }
 
     @Test
@@ -46,7 +48,8 @@ public class ApiStatusCodeTest {
                 .build();
 
         Response response = BookingApi.postBooking(payload);
-        Approvals.verify(response.getStatusCode());
+
+        Assertions.assertEquals(200, response.getStatusCode());
     }
 
     @Test
@@ -74,7 +77,6 @@ public class ApiStatusCodeTest {
                 createdBookingResponse.getBookingid(),
                 authResponse.getToken());
 
-        Approvals.verify(deleteResponse.getStatusCode());
+        Assertions.assertEquals(201, deleteResponse.getStatusCode());
     }
-
 }
