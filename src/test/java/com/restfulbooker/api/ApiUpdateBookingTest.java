@@ -58,7 +58,6 @@ public class ApiUpdateBookingTest {
                 .build();
         Response response = AuthApi.postAuth(auth);
 
-        String actualToken = response.getBody().jsonPath().get("token").toString();
-        return actualToken;
+        return response.getBody().jsonPath().get("token").toString();
     }
 }
