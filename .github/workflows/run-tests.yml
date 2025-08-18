@@ -1,0 +1,60 @@
+name: Run API Tests
+
+on: [push] # Этот workflow запускается на каждый push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest # используем Ubuntu как runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17 # устанавливаем JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Cache Maven packages # кэшируем зависимости Maven (ускоряет последующие сборки)
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Run tests with Maven # запускаем тесты
+        continue-on-error: true
+        run: mvn clean test -Dtest='com.restfulbooker.api.**'
+
+      - name: Generate Allure report
+        if: always()
+        run: mvn allure:report
+
+      # Загружаем историю Allure Report из специальной ветки gh-pages
+      # doc: https://allurereport.org/docs/integrations-github/
+      - name: Load test report history
+        uses: actions/checkout@v2
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: target/allure-results
+
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
