@@ -4,13 +4,20 @@ import com.restfulbooker.api.api.BookingApi;
 import com.restfulbooker.api.payloads.BookingResponse;
 import com.restfulbooker.api.payloads.lombok.Booking;
 import com.restfulbooker.api.payloads.lombok.BookingDates;
+import io.qameta.allure.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ApiCreateBookingTest {
 
+    @Epic("Booking API")
+    @Feature("Create booking")
+    @Story("Positive create booking")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
+    @DisplayName("Создание букинга с валидными данными")
     public void postBookingAndGetBooking(){
         BookingDates dates = new BookingDates();
         Booking payload = Booking.builder()

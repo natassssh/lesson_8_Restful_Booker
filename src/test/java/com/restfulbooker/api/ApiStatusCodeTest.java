@@ -7,35 +7,57 @@ import com.restfulbooker.api.payloads.AuthResponse;
 import com.restfulbooker.api.payloads.BookingResponse;
 import com.restfulbooker.api.payloads.lombok.Booking;
 import com.restfulbooker.api.payloads.lombok.BookingDates;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.approvaltests.Approvals;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class ApiStatusCodeTest {
 
+    @Epic("Booking API")
+    @Feature("Check Status code")
+    @Story("Positive get bookings")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
+    @DisplayName("Получение букингов с валидными данными")
     public void getBookingShouldReturn200() {
         Response response = BookingApi.getBookings();
 
         Assertions.assertEquals(200, response.getStatusCode());
     }
 
+    @Epic("Booking API")
+    @Feature("Check Status code")
+    @Story("Positive get booking")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
+    @DisplayName("Получение букинга с валидными данными")
     public void getBookingIdShouldReturn200() {
         Response response = BookingApi.getBooking(1, "application/json");
 
         Assertions.assertEquals(200, response.getStatusCode());
     }
 
+    @Epic("Booking API")
+    @Feature("Check Status code")
+    @Story("Negative get booking")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
+    @DisplayName("Получение букинга с невалидными данными")
     public void getBookingIdWithBadAcceptShouldReturn418() {
         Response response = BookingApi.getBooking(1, "text/plain");
 
         Assertions.assertEquals(418, response.getStatusCode());
     }
 
+    @Epic("Booking API")
+    @Feature("Check Status code")
+    @Story("Positive create booking")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
+    @DisplayName("Создание букинга с валидными данными")
     public void postBookingReturns200() {
         BookingDates dates = new com.restfulbooker.api.payloads.lombok.BookingDates();
         Booking payload = com.restfulbooker.api.payloads.lombok.Booking.builder()
@@ -52,7 +74,12 @@ public class ApiStatusCodeTest {
         Assertions.assertEquals(200, response.getStatusCode());
     }
 
+    @Epic("Booking API")
+    @Feature("Check Status code")
+    @Story("Positive delete booking")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
+    @DisplayName("Удаление букинга с валидными данными")
     public void deleteBookingReturns201() {
         BookingDates dates = new BookingDates();
         Booking payload = Booking.builder()

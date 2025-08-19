@@ -8,7 +8,9 @@ import com.restfulbooker.api.payloads.lombok.BookingDates;
 import com.restfulbooker.api.api.BookingApi;
 import com.restfulbooker.api.payloads.BookingResponse;
 
+import io.qameta.allure.*;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -16,7 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ApiUpdateBookingTest {
 
+    @Epic("Booking API")
+    @Feature("Update booking")
+    @Story("Positive update booking")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
+    @DisplayName("Обновление данных букинга с валидными данными")
     public void testCreateAndUpdateBooking() {
         // Создаём новое бронирование
         BookingDates dates = new BookingDates();
