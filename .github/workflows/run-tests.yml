@@ -1,7 +1,8 @@
 name: Run API Tests
 
-on: push # Этот workflow запускается на каждый push
-    workflow_dispatch
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
   test:
